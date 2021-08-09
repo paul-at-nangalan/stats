@@ -60,16 +60,26 @@ type Stat interface {
 	getrate()float64
 	hasrate()bool
 }
+var stop chan bool
 
 func Run(printintvl time.Duration, counters []Stat){
+	stop = make(chan bool, 5)
+	quit := false
 	ticker := time.NewTicker(printintvl)
-	for{
+	for !quit{
 		select {
 		case <-ticker.C:
 			for _, stat := range counters {
 				stat.print()
 			}
+		case <-stop:
+			quit = true
 		}
+	}
+}
+func Stop(){
+	if stop != nil{
+		stop <- true
 	}
 }
 
