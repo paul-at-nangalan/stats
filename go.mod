@@ -1,3 +1,3 @@
-module github.com/paul-at-nangalan/stats
+module stats
 
-go 1.14
+go 1.21
