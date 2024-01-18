@@ -117,6 +117,10 @@ func NewBucketCounter(min, max, step float64, name string) *BucketCounter {
 }
 
 func (p *BucketCounter) Inc(val float64) {
+	if math.IsNaN(val) {
+		///what can we do .... ignore it
+		return
+	}
 	atomic.AddInt64(&p.count, 1)
 	if val <= p.min {
 		p.buckets[0].Inc()
