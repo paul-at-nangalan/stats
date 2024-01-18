@@ -132,7 +132,8 @@ func (p *BucketCounter) Inc(val float64) {
 		log.Panic("This should be impossible ... the index is negative despite checking for val <= min")
 	}
 	indx := int(relpos / p.step)
-
+	fmt.Println("ffs index is ", indx, " relpos is ", relpos, " step is ", p.step, " val is ", val,
+		" min is ", p.min, " max is ", p.max)
 	for i := indx; i < len(p.ranges); i++ {
 		if val <= p.ranges[i] {
 			break
