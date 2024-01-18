@@ -128,6 +128,9 @@ func (p *BucketCounter) Inc(val float64) {
 	}
 
 	relpos := (val - p.min)
+	if relpos < 0 {
+		log.Panic("This should be impossible ... the index is negative despite checking for val <= min")
+	}
 	indx := int(relpos / p.step)
 
 	for i := indx; i < len(p.ranges); i++ {
