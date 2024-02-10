@@ -1,2 +1,2 @@
 # stats
-Very simple stats
+Very simple stats counters
