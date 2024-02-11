@@ -2,17 +2,19 @@ package stats
 
 import (
 	"fmt"
-	"sync/atomic"
+	"sync"
 )
 
 type CumulativeCounter struct {
-	count int64
+	count float64
+	lock  sync.RWMutex
 	name  string
 }
 
 func (c *CumulativeCounter) print() {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
 	fmt.Println(c.name, ": ", c.count)
-
 }
 
 func (c *CumulativeCounter) getname() string {
@@ -20,15 +22,17 @@ func (c *CumulativeCounter) getname() string {
 }
 
 func (c *CumulativeCounter) getrate() float64 {
-	return float64(c.count) //// not a rate counter
+	return c.count //// not a rate counter
 }
 
 func (c *CumulativeCounter) hasrate() bool {
 	return false
 }
 
-func (c *CumulativeCounter) Inc(amount int64) {
-	atomic.AddInt64(&c.count, amount)
+func (c *CumulativeCounter) Inc(amount float64) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	c.count += amount
 }
 
 func NewCumulativeCounter(name string) *CumulativeCounter {
