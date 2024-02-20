@@ -131,6 +131,8 @@ func (p *BucketCounter) Inc(val float64) {
 		return
 	}
 
+	///there's an off by one error is this calc - whcih seems to push slightly -ve numbers into the +ve
+	/// I haven't yet had time to track it down
 	relpos := (val - p.min)
 	if relpos < 0 {
 		log.Panic("This should be impossible ... the index is negative despite checking for val <= min")
