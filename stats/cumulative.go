@@ -35,6 +35,12 @@ func (c *CumulativeCounter) Inc(amount float64) {
 	c.count += amount
 }
 
+func (c *CumulativeCounter) Clear() {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	c.count = 0
+}
+
 func NewCumulativeCounter(name string) *CumulativeCounter {
 	return &CumulativeCounter{
 		count: 0,

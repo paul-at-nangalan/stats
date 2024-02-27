@@ -48,7 +48,7 @@ func (p *Counter) getrate() float64 {
 }
 
 func (p *Counter) hasrate() bool {
-	if p.count > 0 {
+	if p.count > p.lastcount {
 		return true
 	}
 	return false
